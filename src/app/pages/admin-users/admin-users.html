@@ -1,0 +1,166 @@
+<div class="p-4 md:p-8 bg-[#F8FAFC] min-h-screen overflow-x-hidden">
+
+    <!-- Header -->
+    <div class="mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 md:gap-4">
+        <div class="min-w-0">
+            <h1 class="text-xl md:text-2xl font-bold text-[#0B1F33]">Manage Users</h1>
+            <p class="text-gray-500 text-xs md:text-sm mt-1">Monitor user activity and manage system permissions.</p>
+        </div>
+        <div
+            class="bg-white px-4 py-2.5 rounded-xl border border-gray-100 shadow-sm flex items-center justify-center gap-2 w-full sm:w-auto">
+            <span class="text-xs font-bold text-gray-400 uppercase">Total:</span>
+            <span class="text-xs font-black text-[#0B1F33]">{{ AllUsser.length }} Users</span>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+
+        <!-- Mobile: cards -->
+        <div class="md:hidden divide-y divide-gray-100">
+            @for (user of pagedBookings; track user.userId) {
+            <div class="p-4 flex flex-col gap-3">
+
+                <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div
+                            class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-blue-100 border-2 border-white shrink-0">
+                            {{ user.fullName.charAt(0) }}
+                        </div>
+                        <div class="min-w-0">
+                            <p class="font-bold text-slate-700 tracking-tight truncate">{{ user.fullName }}</p>
+                            <span
+                                class="text-[10px] px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded-md font-bold uppercase">Active
+                                Customer</span>
+                        </div>
+                    </div>
+
+                    <button (click)="deleteUser(user.userId)" aria-label="Remove user"
+                        class="w-11 h-11 flex items-center justify-center text-rose-500 hover:bg-rose-50 hover:text-rose-600 rounded-xl transition-all border border-transparent hover:border-rose-100 shrink-0">
+                        <i class="fas fa-user-minus"></i>
+                    </button>
+                </div>
+
+                <div class="flex flex-col gap-2 bg-gray-50 rounded-xl p-3 text-xs">
+                    <div class="flex items-center gap-2 text-gray-600 min-w-0">
+                        <i class="far fa-envelope text-gray-400 shrink-0"></i>
+                        <span class="font-medium truncate">{{ user.email }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-gray-500">
+                        <i class="fas fa-phone-alt text-gray-400 shrink-0"></i>
+                        <span>{{ user.phoneNumber }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="text-gray-400 uppercase font-bold text-[9px] tracking-widest shrink-0">ID</span>
+                        <span class="font-mono text-[11px] font-bold text-slate-400 truncate">{{ user.userId }}</span>
+                    </div>
+                </div>
+            </div>
+            }
+
+            @if (!pagedBookings.length) {
+            <p class="p-6 text-center text-sm text-gray-400">No users found</p>
+            }
+        </div>
+
+        <!-- Tablet / Desktop: table -->
+        <div class="hidden md:block overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50/50 text-gray-400 uppercase text-[10px] font-black tracking-widest">
+                    <tr>
+                        <th class="text-left py-5 px-6 lg:px-8">User Profile</th>
+                        <th class="text-left py-5 px-6 lg:px-8">Contact Information</th>
+                        <th class="text-center py-5 px-6 lg:px-8">User ID</th>
+                        <th class="text-center py-5 px-6 lg:px-8">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    @for (user of pagedBookings; track user.userId) {
+                    <tr class="hover:bg-gray-50/50 transition-colors group">
+
+                        <td class="py-5 px-6 lg:px-8">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-blue-100 border-2 border-white transition-transform group-hover:scale-110 shrink-0">
+                                    {{ user.fullName.charAt(0) }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-700 tracking-tight whitespace-nowrap">{{
+                                        user.fullName }}</p>
+                                    <span
+                                        class="text-[10px] px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded-md font-bold uppercase whitespace-nowrap">Active
+                                        Customer</span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="py-5 px-6 lg:px-8">
+                            <div class="flex flex-col gap-1">
+                                <div class="flex items-center gap-2 text-gray-600">
+                                    <i class="far fa-envelope text-[10px] text-gray-400"></i>
+                                    <span class="text-xs font-medium">{{ user.email }}</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-gray-500">
+                                    <i class="fas fa-phone-alt text-[10px] text-gray-400"></i>
+                                    <span class="text-[11px]">{{ user.phoneNumber }}</span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="py-5 px-6 lg:px-8 text-center">
+                            <span
+                                class="font-mono text-[11px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-lg border border-gray-100">
+                                {{ user.userId }}
+                            </span>
+                        </td>
+
+                        <td class="py-5 px-6 lg:px-8 text-center">
+                            <button (click)="deleteUser(user.userId)"
+                                class="p-2.5 text-rose-500 hover:bg-rose-50 hover:text-rose-600 rounded-xl transition-all border border-transparent hover:border-rose-100"
+                                title="Remove User" aria-label="Remove user">
+                                <i class="fas fa-user-minus"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div
+            class="px-4 py-4 md:px-8 md:py-5 bg-gray-50/30 border-t border-gray-50 flex flex-col sm:flex-row justify-between items-center gap-3 md:gap-4">
+            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                Displaying Page {{ currentPage }} of {{ totalPages }}
+            </p>
+
+            <div class="flex gap-1 items-center">
+                <button (click)="prevPage()" [disabled]="currentPage === 1"
+                    class="w-10 h-10 md:w-9 md:h-9 flex items-center justify-center border border-gray-200 rounded-xl bg-white hover:bg-gray-50 disabled:opacity-40 transition-all text-gray-600 shadow-sm">
+                    <i class="fas fa-chevron-left text-[10px]"></i>
+                </button>
+
+                <!-- Mobile: current / total -->
+                <span class="sm:hidden px-3 text-sm font-bold text-[#0B1F33]">{{ currentPage }} / {{ totalPages
+                    }}</span>
+
+                <!-- Tablet / Desktop: page numbers -->
+                <div class="hidden sm:flex gap-1 mx-2 max-w-[300px] overflow-x-auto p-1">
+                    @for (page of [].constructor(totalPages); track $index; let i = $index) {
+                    <button (click)="goToPage(i + 1)" [ngClass]="{
+                                'bg-[#0B1F33] text-white border-[#0B1F33] shadow-md': currentPage === (i + 1),
+                                'bg-white text-gray-500 border-gray-200 hover:bg-gray-50': currentPage !== (i + 1)
+                            }"
+                        class="w-9 h-9 shrink-0 flex items-center justify-center border rounded-xl text-xs font-bold transition-all">
+                        {{ i + 1 }}
+                    </button>
+                    }
+                </div>
+
+                <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+                    class="w-10 h-10 md:w-9 md:h-9 flex items-center justify-center border border-gray-200 rounded-xl bg-white hover:bg-gray-50 disabled:opacity-40 transition-all text-gray-600 shadow-sm">
+                    <i class="fas fa-chevron-right text-[10px]"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

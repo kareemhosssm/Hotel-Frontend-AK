@@ -1,0 +1,231 @@
+<div class="p-4 sm:p-6 md:p-8 bg-[#F8FAFC] min-h-screen overflow-x-hidden">
+
+    <!-- Header -->
+    <div class="mb-5 md:mb-8">
+        <h1 class="text-xl md:text-2xl font-bold text-[#0B1F33]">Settings</h1>
+        <p class="text-gray-500 text-xs md:text-sm mt-1">
+            Manage your hotel information, notifications and account security.
+        </p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="grid grid-cols-2 md:flex md:flex-wrap gap-2 mb-4 md:mb-6">
+        @for (tab of tabs; track tab.id) {
+        <button type="button" (click)="activeTab = tab.id" [ngClass]="activeTab === tab.id
+        ? 'bg-[#0B1F33] text-white border-[#0B1F33] shadow-md'
+        : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'"
+            class="min-h-[44px] px-3 md:px-5 rounded-xl border text-xs md:text-sm font-bold flex items-center justify-center md:justify-start gap-2 transition-all min-w-0">
+            <i class="fas shrink-0" [ngClass]="tab.icon"></i>
+            <span class="truncate">{{ tab.label }}</span>
+        </button>
+        }
+    </div>
+
+    <!-- Card -->
+    <div
+        class="w-full max-w-5xl bg-white rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8">
+
+        @switch (activeTab) {
+
+        <!-- ================= Hotel Info ================= -->
+        @case ('hotel') {
+        <form [formGroup]="hotelForm" (ngSubmit)="saveHotel()" class="flex flex-col gap-5">
+            <div>
+                <h2 class="text-base md:text-lg font-bold text-[#0B1F33]">Hotel Information</h2>
+                <p class="text-xs text-gray-400 mt-1">This information is used across the site and in booking
+                    confirmations.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div class="flex flex-col gap-1.5 min-w-0">
+                    <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Hotel Name</label>
+                    <input type="text" formControlName="name"
+                        class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" />
+                    @if (invalid(hotelForm, 'name')) { <span class="text-xs text-rose-500">Hotel name is
+                        required.</span> }
+                </div>
+
+                <div class="flex flex-col gap-1.5 min-w-0">
+                    <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Contact Email</label>
+                    <input type="email" formControlName="email"
+                        class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" />
+                    @if (invalid(hotelForm, 'email')) { <span class="text-xs text-rose-500">Enter a valid email.</span>
+                    }
+                </div>
+
+                <div class="flex flex-col gap-1.5 min-w-0">
+                    <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Phone</label>
+                    <input type="tel" formControlName="phone"
+                        class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" />
+                    @if (invalid(hotelForm, 'phone')) { <span class="text-xs text-rose-500">Enter a valid phone
+                        number.</span> }
+                </div>
+
+                <div class="flex flex-col gap-1.5 min-w-0">
+                    <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Currency</label>
+                    <select formControlName="currency"
+                        class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 bg-white text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none">
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="EGP">EGP (E£)</option>
+                        <option value="SAR">SAR (﷼)</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col gap-1.5 min-w-0 md:col-span-2">
+                    <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Address</label>
+                    <textarea rows="2" formControlName="address"
+                        class="w-full min-w-0 px-3 py-2.5 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none resize-none"></textarea>
+                </div>
+
+                <!-- Check-in / out side by side even on phones -->
+                <div class="grid grid-cols-2 gap-3 md:col-span-2 md:grid-cols-3 md:gap-4">
+                    <div class="flex flex-col gap-1.5 min-w-0">
+                        <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Check-in</label>
+                        <input type="time" formControlName="checkInTime"
+                            class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" />
+                    </div>
+
+                    <div class="flex flex-col gap-1.5 min-w-0">
+                        <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Check-out</label>
+                        <input type="time" formControlName="checkOutTime"
+                            class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" />
+                    </div>
+
+                    <div class="flex flex-col gap-1.5 min-w-0 col-span-2 md:col-span-1">
+                        <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Tax Rate
+                            (%)</label>
+                        <input type="number" min="0" max="100" formControlName="taxRate"
+                            class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" />
+                        @if (invalid(hotelForm, 'taxRate')) { <span class="text-xs text-rose-500">Must be between 0 and
+                            100.</span> }
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button type="submit"
+                    class="w-full sm:w-auto min-h-[44px] bg-[#0B1F33] text-white px-8 rounded-xl text-sm font-bold shadow-lg shadow-blue-900/10 hover:bg-slate-800 transition-all">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+        }
+
+        <!-- ================= Notifications ================= -->
+        @case ('notifications') {
+        <form [formGroup]="notifForm" (ngSubmit)="saveNotifications()" class="flex flex-col gap-2">
+            <div class="mb-3">
+                <h2 class="text-base md:text-lg font-bold text-[#0B1F33]">Notifications</h2>
+                <p class="text-xs text-gray-400 mt-1">Choose what you want to be notified about.</p>
+            </div>
+
+            <div class="divide-y divide-gray-100">
+                @for (item of notifItems; track item.key) {
+                <div class="flex items-center justify-between gap-4 py-4">
+                    <div class="min-w-0">
+                        <p class="font-bold text-slate-700 text-sm">{{ item.title }}</p>
+                        <p class="text-xs text-gray-400 mt-0.5">{{ item.desc }}</p>
+                    </div>
+
+                    <label class="relative inline-flex items-center cursor-pointer shrink-0 w-11 h-6">
+                        <input type="checkbox" class="sr-only peer" [formControlName]="item.key"
+                            [attr.aria-label]="item.title" />
+                        <div
+                            class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-[#0B1F33] peer-focus-visible:ring-2 peer-focus-visible:ring-blue-300 transition-colors">
+                        </div>
+                        <div
+                            class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5">
+                        </div>
+                    </label>
+                </div>
+                }
+            </div>
+
+            <div class="flex justify-end pt-4">
+                <button type="submit"
+                    class="w-full sm:w-auto min-h-[44px] bg-[#0B1F33] text-white px-8 rounded-xl text-sm font-bold shadow-lg shadow-blue-900/10 hover:bg-slate-800 transition-all">
+                    Save Preferences
+                </button>
+            </div>
+        </form>
+        }
+
+        <!-- ================= Security ================= -->
+        @case ('security') {
+        <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="flex flex-col gap-5 w-full md:max-w-lg">
+            <div>
+                <h2 class="text-base md:text-lg font-bold text-[#0B1F33]">Change Password</h2>
+                <p class="text-xs text-gray-400 mt-1">Use at least 8 characters.</p>
+            </div>
+
+            <div class="flex flex-col gap-1.5 min-w-0">
+                <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Current Password</label>
+                <input [type]="showPasswords ? 'text' : 'password'" formControlName="currentPassword"
+                    autocomplete="current-password"
+                    class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" />
+                @if (invalid(passwordForm, 'currentPassword')) { <span class="text-xs text-rose-500">Current password is
+                    required.</span> }
+            </div>
+
+            <div class="flex flex-col gap-1.5 min-w-0">
+                <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">New Password</label>
+                <input [type]="showPasswords ? 'text' : 'password'" formControlName="newPassword"
+                    autocomplete="new-password"
+                    class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" />
+                @if (invalid(passwordForm, 'newPassword')) { <span class="text-xs text-rose-500">Password must be at
+                    least 8 characters.</span> }
+            </div>
+
+            <div class="flex flex-col gap-1.5 min-w-0">
+                <label class="text-[11px] font-black uppercase tracking-widest text-gray-400">Confirm New
+                    Password</label>
+                <input [type]="showPasswords ? 'text' : 'password'" formControlName="confirmPassword"
+                    autocomplete="new-password"
+                    class="w-full min-w-0 min-h-[44px] px-3 rounded-xl border border-gray-200 text-base md:text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none" />
+                @if (passwordForm.hasError('mismatch') && passwordForm.get('confirmPassword')?.touched) {
+                <span class="text-xs text-rose-500">Passwords do not match.</span>
+                }
+            </div>
+
+            <label class="flex items-center gap-2 text-xs text-gray-500 cursor-pointer min-h-[44px] md:min-h-0">
+                <input type="checkbox" class="w-4 h-4 accent-[#0B1F33]" [checked]="showPasswords"
+                    (change)="showPasswords = !showPasswords" />
+                Show passwords
+            </label>
+
+            <div class="flex justify-end">
+                <button type="submit"
+                    class="w-full sm:w-auto min-h-[44px] bg-[#0B1F33] text-white px-8 rounded-xl text-sm font-bold shadow-lg shadow-blue-900/10 hover:bg-slate-800 transition-all">
+                    Update Password
+                </button>
+            </div>
+        </form>
+        }
+
+        <!-- ================= Account ================= -->
+        @case ('account') {
+        <div class="flex flex-col gap-5">
+            <div>
+                <h2 class="text-base md:text-lg font-bold text-[#0B1F33]">Account</h2>
+                <p class="text-xs text-gray-400 mt-1">Manage your current session.</p>
+            </div>
+
+            <div
+                class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-rose-50/50 border border-rose-100 rounded-2xl p-4 md:p-5">
+                <div class="min-w-0">
+                    <p class="font-bold text-slate-700 text-sm">Sign out</p>
+                    <p class="text-xs text-gray-500 mt-0.5">You will need to log in again to access the admin panel.</p>
+                </div>
+                <button type="button" (click)="logout()"
+                    class="w-full sm:w-auto min-h-[44px] flex items-center justify-center gap-2 bg-rose-500 text-white px-6 rounded-xl text-sm font-bold hover:bg-rose-600 transition-all shrink-0">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+        }
+
+        }
+    </div>
+</div>

@@ -1,0 +1,100 @@
+<section class="p-6 bg-[#F8FAFC] min-h-screen">
+  <form [formGroup]="roomForm" (ngSubmit)="onSubmit()" class="max-w-4xl mx-auto">
+    
+    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+      
+      <div class="px-8 py-6 border-b border-gray-50 bg-white">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-[#0B1F33] rounded-xl flex items-center justify-center text-[#C9A24D]">
+            <i class="fas fa-door-open text-lg"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold text-[#0B1F33]">Add New Room</h1>
+            <p class="text-gray-400 text-xs mt-0.5">Enter details to list a new unit in your inventory</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-8 space-y-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="label-style">Room Number</label>
+            <input type="text" formControlName="number" class="input-style" placeholder="e.g. 101" />
+          </div>
+
+          <div>
+            <label class="label-style">Room Type</label>
+            <select formControlName="type" class="input-style">
+              <option value="" disabled selected>Select Category</option>
+              <option value="Single">Single Room</option>
+              <option value="Double">Double Room</option>
+              <option value="Family">Family Suite</option>
+              <option value="Royal">Royal Suite</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+          <div>
+            <label class="label-style">Price Per Night ($)</label>
+            <div class="relative">
+              <input type="number" formControlName="pricePerNight" class="input-style pl-10" placeholder="100.00" />
+              
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+            <span class="text-sm font-bold text-[#0B1F33]">Instantly Available?</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" formControlName="isAvailable" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#C9A24D]"></div>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="label-style">Room Description</label>
+          <textarea rows="4" formControlName="description" class="input-style resize-none" placeholder="Describe the room amenities, view, and unique features..."></textarea>
+        </div>
+
+        <div>
+          <label class="label-style text-[#0B1F33]">Room Gallery</label>
+          <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-100 border-dashed rounded-2xl bg-gray-50/50 hover:bg-gray-50 transition-colors cursor-pointer group">
+            <div class="space-y-1 text-center">
+              <i class="fas fa-images text-3xl text-gray-300 group-hover:text-[#C9A24D] transition-colors mb-2"></i>
+              <div class="flex text-sm text-gray-600">
+                <label for="file-upload" class="relative cursor-pointer bg-transparent rounded-md font-bold text-[#C9A24D] hover:underline">
+                  <span>Upload room images</span>
+                  <input id="file-upload" type="file" class="sr-only" (change)="onFileSelected($event)" multiple>
+                </label>
+                <p class="pl-1">or drag and drop</p>
+              </div>
+              <p class="text-xs text-gray-400">PNG, JPG, GIF up to 10MB</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-8 py-6 bg-gray-50 flex items-center justify-end gap-3">
+        <button type="reset" class="px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors">
+          Clear Form
+        </button>
+        <button type="submit" class="bg-[#0B1F33] text-white px-10 py-3 rounded-xl font-bold text-sm shadow-xl shadow-blue-900/10 hover:bg-[#163552] transition-all active:scale-95">
+          Save & Publish Room
+        </button>
+      </div>
+
+    </div>
+  </form>
+</section>
+
+<style>
+  /* استايلات مساعدة لنضافة الكود */
+  .label-style {
+    @apply block mb-2 text-[10px] font-black uppercase tracking-[0.15em] text-[#0B1F33]/70;
+  }
+  .input-style {
+    @apply w-full px-4 py-3 bg-white border border-gray-100 rounded-xl focus:ring-4 focus:ring-[#C9A24D]/10 focus:border-[#C9A24D] outline-none transition-all text-sm font-medium placeholder:text-gray-300;
+  }
+</style>

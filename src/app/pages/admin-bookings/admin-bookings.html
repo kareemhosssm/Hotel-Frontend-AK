@@ -1,0 +1,177 @@
+<div
+    class="bg-white mt-4 md:mt-8 rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all hover:shadow-md">
+
+    <!-- Header -->
+    <div
+        class="px-4 py-4 md:px-8 md:py-6 border-b border-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 md:gap-4">
+        <div class="min-w-0">
+            <h2 class="text-lg md:text-xl font-bold text-[#0B1F33]">Reservation Management</h2>
+            <p class="text-[10px] md:text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold">
+                Total: {{ allbooking.length }} Bookings Found
+            </p>
+        </div>
+        <div
+            class="flex items-center gap-2 bg-gray-50 px-4 py-2.5 rounded-xl border border-gray-100 w-full sm:w-auto justify-center">
+            <i class="fas fa-filter text-gray-400 text-xs"></i>
+            <span class="text-xs font-bold text-gray-500 uppercase">Filter</span>
+        </div>
+    </div>
+
+    <!-- Mobile: cards -->
+    <div class="md:hidden divide-y divide-gray-100">
+        <div *ngFor="let booking of pagedBookings" class="p-4 flex flex-col gap-3">
+
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-slate-100 text-[#0B1F33] flex items-center justify-center font-bold text-sm border border-gray-200 shrink-0">
+                        {{ booking.guestName.charAt(0) }}
+                    </div>
+                    <div class="min-w-0">
+                        <p class="font-bold text-slate-700 truncate">{{ booking.guestName }}</p>
+                        <p class="text-xs text-gray-500 truncate">
+                            {{ booking.room }} ·
+                            <span class="font-mono font-bold text-[#C9A24D]">#{{ booking.roomNumber }}</span>
+                        </p>
+                    </div>
+                </div>
+                <span [ngClass]="{
+            'bg-emerald-50 text-emerald-600 border-emerald-100': booking.status === 'Confirmed',
+            'bg-amber-50 text-amber-600 border-amber-100': booking.status === 'Pending',
+            'bg-rose-50 text-rose-600 border-rose-100': booking.status === 'Cancelled'
+          }" class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase border shrink-0">
+                    {{ booking.status }}
+                </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-xs bg-gray-50 rounded-xl p-3">
+                <div>
+                    <p class="text-gray-400 uppercase font-bold text-[9px] tracking-widest">Check In</p>
+                    <p class="font-semibold text-slate-600">{{ booking.checkIn | date:'dd MMM, yyyy' }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-400 uppercase font-bold text-[9px] tracking-widest">Check Out</p>
+                    <p class="font-semibold text-slate-600">{{ booking.checkOut | date:'dd MMM, yyyy' }}</p>
+                </div>
+            </div>
+
+            <select (change)="updateBookingStatus(booking.bookingId, $any($event.target).value)"
+                [value]="booking.status"
+                class="w-full min-h-[44px] appearance-none bg-white border border-gray-200 text-gray-600 px-3 rounded-xl text-sm font-bold focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none cursor-pointer shadow-sm">
+                <option value="Pending">🕒 Pending</option>
+                <option value="Confirmed">✅ Confirm</option>
+                <option value="Cancelled">❌ Cancel</option>
+            </select>
+        </div>
+
+        <p *ngIf="!pagedBookings.length" class="p-6 text-center text-sm text-gray-400">No bookings found</p>
+    </div>
+
+    <!-- Tablet / Desktop: table -->
+    <div class="hidden md:block overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-50/50 text-gray-400 uppercase text-[10px] font-black tracking-widest">
+                <tr>
+                    <th class="text-left py-5 px-6 lg:px-8">Guest Details</th>
+                    <th class="text-left py-5 px-6 lg:px-8">Room Type</th>
+                    <th class="text-left py-5 px-6 lg:px-8">Unit No.</th>
+                    <th class="text-center py-5 px-6 lg:px-8">Stay Duration</th>
+                    <th class="text-left py-5 px-6 lg:px-8">Status</th>
+                    <th class="text-center py-5 px-6 lg:px-8">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+                <tr *ngFor="let booking of pagedBookings" class="hover:bg-gray-50/50 transition-colors group">
+                    <td class="py-5 px-6 lg:px-8">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-9 h-9 rounded-xl bg-slate-100 text-[#0B1F33] flex items-center justify-center font-bold text-xs border border-gray-200 group-hover:bg-[#0B1F33] group-hover:text-white transition-all shrink-0">
+                                {{ booking.guestName.charAt(0) }}
+                            </div>
+                            <span class="font-bold text-slate-700 tracking-tight whitespace-nowrap">{{ booking.guestName
+                                }}</span>
+                        </div>
+                    </td>
+
+                    <td class="py-5 px-6 lg:px-8">
+                        <span
+                            class="text-xs font-bold text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-gray-100 whitespace-nowrap">
+                            {{ booking.room }}
+                        </span>
+                    </td>
+
+                    <td class="py-5 px-6 lg:px-8">
+                        <span class="font-mono text-sm font-bold text-[#C9A24D]">#{{ booking.roomNumber }}</span>
+                    </td>
+
+                    <td class="py-5 px-6 lg:px-8 text-center">
+                        <div
+                            class="inline-flex flex-col items-center p-2 bg-blue-50/30 rounded-xl border border-blue-100/50">
+                            <span class="text-[11px] font-bold text-blue-700">{{ booking.checkIn | date:'dd MMM'
+                                }}</span>
+                            <div class="w-px h-2 bg-blue-200 my-0.5"></div>
+                            <span class="text-[11px] font-bold text-blue-400">{{ booking.checkOut | date:'dd MMM'
+                                }}</span>
+                        </div>
+                    </td>
+
+                    <td class="py-5 px-6 lg:px-8">
+                        <span [ngClass]="{
+                'bg-emerald-50 text-emerald-600 border-emerald-100': booking.status === 'Confirmed',
+                'bg-amber-50 text-amber-600 border-amber-100': booking.status === 'Pending',
+                'bg-rose-50 text-rose-600 border-rose-100': booking.status === 'Cancelled'
+              }" class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase border tracking-tighter inline-block min-w-[85px] text-center">
+                            {{ booking.status }}
+                        </span>
+                    </td>
+
+                    <td class="py-5 px-6 lg:px-8">
+                        <div class="relative max-w-[130px] mx-auto">
+                            <select (change)="updateBookingStatus(booking.bookingId, $any($event.target).value)"
+                                [value]="booking.status"
+                                class="w-full appearance-none bg-white border border-gray-200 text-gray-600 py-1.5 px-3 rounded-xl text-xs font-bold focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none cursor-pointer transition-all shadow-sm">
+                                <option value="Pending">🕒 Pending</option>
+                                <option value="Confirmed">✅ Confirm</option>
+                                <option value="Cancelled">❌ Cancel</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div
+        class="px-4 py-4 md:px-8 md:py-6 bg-gray-50/30 border-t border-gray-50 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <span class="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest">
+            Page {{ currentPage }} of {{ totalPages }}
+        </span>
+
+        <div class="flex items-center gap-1">
+            <button (click)="prevPage()" [disabled]="currentPage === 1"
+                class="w-10 h-10 md:w-9 md:h-9 flex items-center justify-center border border-gray-200 rounded-xl bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600">
+                <i class="fas fa-chevron-left text-[10px]"></i>
+            </button>
+
+            <!-- Mobile: current page only -->
+            <span class="sm:hidden px-3 text-sm font-bold text-[#0B1F33]">{{ currentPage }} / {{ totalPages }}</span>
+
+            <!-- Tablet / Desktop: page numbers (scrollable if many) -->
+            <div class="hidden sm:flex gap-1 mx-2 max-w-[300px] overflow-x-auto">
+                <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)"
+                    [ngClass]="{
+            'bg-[#0B1F33] text-white border-[#0B1F33] shadow-md': currentPage === (i + 1),
+            'bg-white text-gray-500 border-gray-200 hover:bg-gray-50': currentPage !== (i + 1)
+          }" class="w-8 h-8 shrink-0 flex items-center justify-center border rounded-xl text-xs font-bold transition-all">
+                    {{ i + 1 }}
+                </button>
+            </div>
+
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+                class="w-10 h-10 md:w-9 md:h-9 flex items-center justify-center border border-gray-200 rounded-xl bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600">
+                <i class="fas fa-chevron-right text-[10px]"></i>
+            </button>
+        </div>
+    </div>
+</div>

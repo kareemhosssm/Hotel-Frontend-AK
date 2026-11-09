@@ -1,0 +1,108 @@
+<nav class="bg-[#0B1F33] shadow-lg sticky top-0 z-[100] border-b border-[#C9A24D]/20">
+  <div class="max-w-screen-2xl relative flex items-center mx-auto px-6 py-3">
+
+    <!-- Logo (Left) -->
+    <a routerLink="/home" class="flex items-center space-x-3 group z-10">
+      <i
+        class="fas fa-gem text-[#C9A24D] text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"></i>
+      <span class="ms-2 text-[#C9A24D] font-serif text-2xl font-bold tracking-widest uppercase">
+        A&K <span class="text-white font-light text-lg">Grand Hotel</span>
+      </span>
+    </a>
+
+    <!-- Mobile Toggle -->
+    <button (click)="toggleMobileMenu()" type="button"
+      class="ml-auto inline-flex items-center p-2 w-10 h-10 justify-center text-[#C9A24D] rounded-lg md:hidden hover:bg-[#163552] focus:outline-none transition-all">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        @if (!isMobileMenuOpen) {
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        } @else {
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        }
+      </svg>
+    </button>
+
+    <!-- Centered Links (نفس كودك الأصلي للديسكتوب بالظبط + منيو رأسي للموبايل فقط) -->
+    <div [class.hidden]="!isMobileMenuOpen"
+      class="hidden md:flex absolute left-1/2 -translate-x-1/2 max-md:top-full max-md:left-0 max-md:translate-x-0 max-md:w-full max-md:bg-[#0B1F33] max-md:p-6 max-md:shadow-2xl max-md:border-b max-md:border-[#C9A24D]/20"
+      id="navbar-default">
+      @if (isLogin()) {
+      <ul
+        class="text-white flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-10 font-medium tracking-wide w-full">
+        <li><a routerLink="/home" routerLinkActive="text-[#C9A24D] after:scale-x-100"
+            class="relative py-2 text-white/80 hover:text-[#C9A24D] transition-all duration-300 uppercase text-xs font-bold after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-[#C9A24D] after:bottom-0 after:left-0 after:scale-x-0 after:transition-transform">Home</a>
+        </li>
+        <li><a routerLink="/rooms" routerLinkActive="text-[#C9A24D] after:scale-x-100"
+            class="relative py-2 text-white/80 hover:text-[#C9A24D] transition-all duration-300 uppercase text-xs font-bold after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-[#C9A24D] after:bottom-0 after:left-0 after:scale-x-0 after:transition-transform">Rooms</a>
+        </li>
+        <li><a routerLink="/booking" routerLinkActive="text-[#C9A24D] after:scale-x-100"
+            class="relative py-2 text-white/80 hover:text-[#C9A24D] transition-all duration-300 uppercase text-xs font-bold after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-[#C9A24D] after:bottom-0 after:left-0 after:scale-x-0 after:transition-transform">Booking</a>
+        </li>
+        <li><a routerLink="/connectUs" routerLinkActive="text-[#C9A24D] after:scale-x-100"
+            class="relative py-2 text-white/80 hover:text-[#C9A24D] transition-all duration-300 uppercase text-xs font-bold after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-[#C9A24D] after:bottom-0 after:left-0 after:scale-x-0 after:transition-transform">Connect</a>
+        </li>
+        <li><a routerLink="/about" routerLinkActive="text-[#C9A24D] after:scale-x-100"
+            class="relative py-2 text-white/80 hover:text-[#C9A24D] transition-all duration-300 uppercase text-xs font-bold after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-[#C9A24D] after:bottom-0 after:left-0 after:scale-x-0 after:transition-transform">About</a>
+        </li>
+
+        <!-- في الموبايل بس أزرار الـ Action بتظهر تحت اللينكات بشكل رأسي -->
+        <li class="md:hidden pt-4 border-t border-white/10 w-full">
+          <div class="flex flex-col space-y-3">
+            @if (isGuest) {
+            <a routerLink="/login" class="text-white hover:text-[#C9A24D] text-xs font-bold uppercase">Login</a>
+            <a routerLink="/register"
+              class="bg-[#C9A24D] hover:bg-[#b18c3f] text-white px-5 py-2 rounded-full text-xs font-bold uppercase shadow-lg text-center w-fit">Register</a>
+            } @else {
+            @if (isAdmin) {
+            <a routerLink="/admin"
+              class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-xs font-bold border border-white/10 w-fit">
+              <i class="fas fa-user-shield text-[#C9A24D]"></i> Admin
+            </a>
+            }
+            <button (click)="authService.logOUt()"
+              class="flex items-center gap-2 text-red-400 hover:text-red-300 text-xs font-bold uppercase">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+            }
+          </div>
+        </li>
+      </ul>
+      }
+    </div>
+
+    <!-- Right Actions (نفس كودك الأصلي للديسكتوب بالظبط) -->
+    <ul class="hidden md:flex items-center space-x-4 ml-auto z-10">
+      @if (isGuest) {
+      <li>
+        <a routerLink="/login" class="text-white hover:text-[#C9A24D] px-4 py-2 text-xs font-bold uppercase">
+          Login
+        </a>
+      </li>
+      <li>
+        <a routerLink="/register"
+          class="bg-[#C9A24D] hover:bg-[#b18c3f] text-white px-5 py-2 rounded-full text-xs font-bold uppercase shadow-lg">
+          Register
+        </a>
+      </li>
+      } @else {
+
+      @if (isAdmin) {
+      <li>
+        <a routerLink="/admin"
+          class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-xs font-bold border border-white/10">
+          <i class="fas fa-user-shield text-[#C9A24D]"></i> Admin
+        </a>
+      </li>
+      }
+
+      <li>
+        <button (click)="authService.logOUt()"
+          class="flex items-center gap-2 text-red-400 hover:text-red-300 px-4 py-2 text-xs font-bold uppercase">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </li>
+      }
+    </ul>
+
+  </div>
+</nav>

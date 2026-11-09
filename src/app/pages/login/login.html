@@ -1,0 +1,83 @@
+<section class="min-h-[80vh] flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/60 border border-gray-100">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-[#0B1F33] mb-2">Welcome Back</h1>
+            <p class="text-gray-400 text-sm">Please enter your details to login</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="submitForm()" class="space-y-6">
+
+            <div>
+                @let emailControl = loginForm.get('Email');
+                <label for="email" class="block mb-2 text-xs font-black uppercase tracking-widest text-[#0B1F33]">Email Address</label>
+                <div class="relative">
+                    <input formControlName="Email" type="email" id="email" 
+                           class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-[#C9A24D]/20 focus:border-[#C9A24D] transition-all outline-none text-sm"
+                           placeholder="name@example.com" />
+                </div>
+                
+                @if (emailControl?.touched && emailControl?.errors) {
+                    <div class="mt-2 text-[11px] text-red-500 font-medium flex items-center gap-1">
+                        <i class="fas fa-exclamation-circle"></i>
+                        @if (emailControl?.errors?.['required']) { <span>Email is required</span> }
+                        @else if (emailControl?.errors?.['email']) { <span>Please enter a valid email</span> }
+                    </div>
+                }
+            </div>
+
+            <div *ngIf="loginForm.get('Password') as passwordControl">
+                <div class="flex justify-between items-center mb-2">
+                    <label for="password" class="text-xs font-black uppercase tracking-widest text-[#0B1F33]">Password</label>
+                    <a routerLink="/forgot" class="text-[11px] font-bold text-[#C9A24D] hover:underline">Forgot?</a>
+                </div>
+                
+                <div class="relative">
+                    <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="Password"
+                           class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-[#C9A24D]/20 focus:border-[#C9A24D] transition-all outline-none text-sm"
+                           placeholder="••••••••" />
+                    
+                    <button type="button" (click)="togglePassword()"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#C9A24D] transition-colors">
+                        <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </button>
+                </div>
+
+                @if (passwordControl.touched && passwordControl.errors) {
+                    <div class="mt-2 text-[11px] text-red-500 font-medium flex items-center gap-1">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span *ngIf="passwordControl.errors['required']">Password is required</span>
+                        <span *ngIf="passwordControl.errors['pattern']">Weak password format</span>
+                    </div>
+                }
+            </div>
+
+            @if (msgError) {
+                <div class="p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-xs font-bold text-center animate-shake">
+                    {{msgError}}
+                </div>
+            }
+            @if (isSuccess) {
+                <div class="p-3 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600 text-xs font-bold text-center">
+                    {{isSuccess}}
+                </div>
+            }
+
+            <button [disabled]="isLoading || loginForm.invalid" type="submit" 
+                    class="w-full bg-[#0B1F33] hover:bg-[#163552] disabled:bg-gray-300 text-white py-4 rounded-xl font-bold text-sm shadow-lg shadow-blue-900/20 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2">
+                @if (isLoading) {
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                    <span>Verifying...</span>
+                } @else {
+                    <span>Login to Account</span>
+                }
+            </button>
+
+            <p class="text-center text-gray-400 text-xs font-medium">
+                Don't have an account? 
+                <a routerLink="/register" class="text-[#0B1F33] font-bold hover:text-[#C9A24D] transition-colors">Create one</a>
+            </p>
+
+        </form>
+    </div>
+</section>

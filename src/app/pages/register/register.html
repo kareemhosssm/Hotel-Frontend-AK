@@ -1,0 +1,100 @@
+<section class="min-h-screen flex items-center justify-center p-6 bg-[#F8FAFC]">
+  <div class="w-full max-w-2xl bg-white p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-gray-50">
+    
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-12 h-12 bg-[#C9A24D]/10 rounded-full mb-4">
+        <i class="fas fa-user-plus text-[#C9A24D]"></i>
+      </div>
+      <h1 class="text-3xl font-black text-[#0B1F33] tracking-tight">Create Account</h1>
+      <p class="text-gray-400 text-sm mt-2">Join our grand hotel community today</p>
+    </div>
+
+    <form [formGroup]="RegisterForm" (ngSubmit)="submitForm()" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+
+      <div class="md:col-span-2" *ngIf="RegisterForm.get('FullName') as nameControl">
+        <label for="name" class="label-style">Full Name</label>
+        <input type="text" id="name" formControlName="FullName" class="input-style" placeholder="John Doe" />
+        <div *ngIf="nameControl.touched && nameControl.errors" class="error-msg">
+          <span *ngIf="nameControl.errors['required']">Name is required</span>
+          <span *ngIf="nameControl.errors['minlength']">Min 9 characters</span>
+        </div>
+      </div>
+
+      <div class="md:col-span-2" *ngIf="RegisterForm.get('Email') as emailControl">
+        <label for="email" class="label-style">Email Address</label>
+        <input type="email" id="email" formControlName="Email" class="input-style" placeholder="example@mail.com" />
+        <div *ngIf="emailControl.touched && emailControl.errors" class="error-msg">
+          <span *ngIf="emailControl.errors['required']">Email is required</span>
+          <span *ngIf="emailControl.errors['email']">Enter a valid email</span>
+        </div>
+      </div>
+
+      <div *ngIf="RegisterForm.get('Password') as passwordControl">
+        <label for="password" class="label-style">Password</label>
+        <div class="relative">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="Password" class="input-style pr-10" placeholder="••••••••" />
+          <button type="button" (click)="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+        <div *ngIf="passwordControl.touched && passwordControl.errors" class="error-msg">
+          <span *ngIf="passwordControl.errors['required']">Required</span>
+          <span *ngIf="passwordControl.errors['pattern']">Weak password</span>
+        </div>
+      </div>
+
+      <div *ngIf="RegisterForm.get('rePassword') as rePasswordControl">
+        <label for="rePassword" class="label-style">Confirm Password</label>
+        <div class="relative">
+          <input [type]="showRePassword ? 'text' : 'password'" id="rePassword" formControlName="rePassword" class="input-style pr-10" placeholder="••••••••" />
+          <button type="button" (click)="toggleRePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <i class="fas" [ngClass]="showRePassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+        <div *ngIf="(RegisterForm.getError('mismatch') || rePasswordControl.errors) && rePasswordControl.touched" class="error-msg">
+          <span *ngIf="rePasswordControl.errors?.['required']">Required</span>
+          <span *ngIf="RegisterForm.getError('mismatch')">Passwords don't match</span>
+        </div>
+      </div>
+
+      <div class="md:col-span-2" *ngIf="RegisterForm.get('PhoneNumber') as phoneControl">
+        <label for="phone" class="label-style">Phone Number</label>
+        <input type="text" id="phone" formControlName="PhoneNumber" class="input-style" placeholder="+20 123 456 7890" />
+        <div *ngIf="phoneControl.touched && phoneControl.errors" class="error-msg">
+          <span *ngIf="phoneControl.errors['required']">Phone is required</span>
+        </div>
+      </div>
+
+      <div class="md:col-span-2 pt-4 space-y-4">
+        <button type="submit" [disabled]="isLoading || RegisterForm.invalid" class="w-full bg-[#0B1F33] text-white py-4 rounded-2xl font-bold text-sm shadow-xl shadow-blue-900/10 hover:bg-[#163552] transition-all flex items-center justify-center gap-3 disabled:bg-gray-200">
+          <span *ngIf="!isLoading">Create My Account</span>
+          <i *ngIf="isLoading" class="fas fa-circle-notch fa-spin"></i>
+        </button>
+
+        <p class="text-center text-gray-400 text-xs font-medium">
+          Already have an account? 
+          <a routerLink="/login" class="text-[#C9A24D] font-black hover:underline underline-offset-4">Login Now</a>
+        </p>
+      </div>
+
+      <div class="md:col-span-2">
+        <p *ngIf="msgError" class="p-4 bg-red-50 text-red-600 rounded-xl text-xs font-bold border border-red-100 text-center">{{msgError}}</p>
+        <p *ngIf="isSuccess" class="p-4 bg-emerald-50 text-emerald-600 rounded-xl text-xs font-bold border border-emerald-100 text-center">{{isSuccess}}</p>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<style>
+  /* Helper Classes to keep HTML clean */
+  .label-style {
+    @apply block mb-2 text-[10px] font-black uppercase tracking-[0.15em] text-[#0B1F33]/70;
+  }
+  .input-style {
+    @apply w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-4 focus:ring-[#C9A24D]/10 focus:border-[#C9A24D] focus:bg-white transition-all outline-none text-sm font-medium;
+  }
+  .error-msg {
+    @apply mt-1.5 text-[10px] text-red-500 font-bold flex flex-col gap-0.5 px-1;
+  }
+</style>

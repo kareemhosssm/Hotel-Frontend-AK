@@ -1,0 +1,96 @@
+<section class="py-16 bg-[#FDFBF9]">
+  <div class="max-w-7xl mx-auto px-6">
+    
+    <div class="text-center mb-12">
+      <h2 class="text-4xl md:text-5xl font-serif font-bold text-[#0B1F33] mb-4">
+        Our Accommodations
+      </h2>
+      <div class="flex items-center justify-center gap-2">
+        <span class="w-10 h-[1px] bg-[#C9A24D]"></span>
+        <span class="text-[#C9A24D] uppercase tracking-[0.3em] text-[10px] font-bold">Discover Luxury</span>
+        <span class="w-10 h-[1px] bg-[#C9A24D]"></span>
+      </div>
+    </div>
+
+    <div class="max-w-2xl mx-auto mb-16">
+      <div class="relative group">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <i class="fas fa-search text-[#C9A24D] transition-colors group-focus-within:text-[#b18c3f]"></i>
+        </div>
+        <input
+          [(ngModel)]="text"
+          type="search"
+          placeholder="Search by room type (e.g. Deluxe, Suite)..."
+          class="w-full bg-white border border-gray-200 rounded-full py-4 pl-12 pr-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C9A24D]/20 focus:border-[#C9A24D] transition-all duration-300 text-gray-700"
+        />
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      @for (room of RoomsList | search : text; track room.roomId) {
+      <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full translate-y-0 hover:-translate-y-2">
+        
+        <div class="relative overflow-hidden h-[240px]">
+          <img
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            [src]="'http://localhost:5192' + room.images[0]"
+            alt="Room Image"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <div class="absolute top-4 left-4">
+            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg"
+                  [ngClass]="room.isAvailable ? 'bg-green-500 text-white' : 'bg-red-500 text-white'">
+              {{ room.isAvailable ? 'Available' : 'Reserved' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="p-6 flex flex-col flex-grow">
+          <div class="flex justify-between items-start mb-3">
+            <h4 class="text-xl font-serif font-bold text-[#0B1F33]">
+              {{ room.type }} Room
+            </h4>
+            <div class="flex items-center bg-yellow-50 px-2 py-1 rounded">
+              <i class="fas fa-star text-yellow-400 text-xs"></i>
+              <span class="text-xs font-bold text-yellow-700 ms-1">5.0</span>
+            </div>
+          </div>
+
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center text-sm text-gray-500 gap-2">
+              <i class="fas fa-door-open text-[#C9A24D] w-4"></i>
+              <span>Room Number: <b>{{ room.number }}</b></span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500 gap-2">
+              <i class="fas fa-check-circle text-[#C9A24D] w-4"></i>
+              <span>Best price guaranteed</span>
+            </div>
+          </div>
+
+          <div class="mt-auto border-t border-gray-50 pt-4 flex justify-between items-center">
+            <div>
+              <span class="text-xs text-gray-400 block uppercase font-bold tracking-tighter">Per Night</span>
+              <span class="text-lg font-bold text-[#C9A24D]">{{ room.pricePerNight | currency : "USD" }}</span>
+            </div>
+            
+            <button
+              [routerLink]="['/details', room.roomId]"
+              class="bg-[#0B1F33] hover:bg-[#C9A24D] text-white p-3 rounded-xl transition-all duration-300 transform active:scale-95 group/btn"
+            >
+              <i class="fas fa-arrow-right transition-transform group-hover/btn:translate-x-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+
+    @if ((RoomsList | search: text).length === 0) {
+      <div class="text-center py-20">
+        <i class="fas fa-search text-4xl text-gray-200 mb-4"></i>
+        <p class="text-gray-500 font-serif italic text-xl">No rooms found matching your search.</p>
+      </div>
+    }
+  </div>
+</section>

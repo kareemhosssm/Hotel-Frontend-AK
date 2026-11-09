@@ -1,0 +1,172 @@
+<section class="relative w-full h-[85vh] overflow-hidden bg-[#0B1F33]">
+        <div class="absolute inset-0">
+            @for (img of images; track img) {
+            <img [src]="img"
+                class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+                [class.opacity-100]="$index === currentIndex" [class.opacity-0]="$index !== currentIndex"
+                alt="Hotel Image">
+            }
+        </div>
+
+        <div class="absolute inset-0 bg-black/40 z-10"></div>
+
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 z-20">
+            <span class="uppercase tracking-[0.3em] text-xs mb-4 text-[#C9A24D] font-bold">Welcome to Luxury</span>
+            <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight">A&K Grand Hotel</h1>
+            <p class="text-lg max-w-2xl font-light italic opacity-90">Experience luxury and comfort like never before.
+            </p>
+
+            <div class="mt-8">
+                <a routerLink="/rooms"
+                    class="bg-[#C9A24D] text-[#0B1F33] font-black px-10 py-4 rounded-full transition-all hover:scale-105 uppercase text-xs tracking-widest">
+                    Book Your Stay
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col items-center justify-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-center mb-4">Popular Rooms</h2>
+                <div class="flex items-center gap-3">
+                    <span class="w-12 h-[2px] bg-[#C9A24D]"></span>
+                    <span class="text-[#C9A24D] text-xl">◈</span>
+                    <span class="w-12 h-[2px] bg-[#C9A24D]"></span>
+                </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+                @for (room of RoomsList.slice(0,4); track room.roomId) {
+                <div
+                    class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 relative translate-y-0 hover:-translate-y-3">
+
+                    <div class="relative h-[280px] overflow-hidden">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            [src]="'http://localhost:5192' + room.images[0]" alt="Room Image" />
+
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+
+                        <span
+                            class="absolute top-5 right-5 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest z-20 shadow-lg"
+                            [ngClass]="room.isAvailable ? 'bg-green-500 text-white animate-pulse' : 'bg-red-500 text-white'">
+                            {{ room.isAvailable ? 'Available' : 'Booked' }}
+                        </span>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span
+                                class="text-[#C9A24D] font-bold text-xs uppercase tracking-tighter bg-[#C9A24D]/10 px-2 py-1 rounded">Room
+                                #{{ room.number }}</span>
+                        </div>
+                        <h4 class="text-2xl font-serif font-bold mb-4 text-[#0B1F33]">{{ room.type }} Room</h4>
+
+                        <hr class="mb-4 border-gray-50">
+
+                        <div class="flex justify-between items-end">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] uppercase text-gray-400 font-bold tracking-widest">Price /
+                                    Night</span>
+                                <span class="text-2xl font-bold text-[#C9A24D]">{{ room.pricePerNight | currency : 'USD'
+                                    }}</span>
+                            </div>
+                            <button [routerLink]="['/details', room.roomId]"
+                                class="p-3 bg-gray-50 rounded-full group-hover:bg-[#C9A24D] group-hover:text-white transition-colors duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-[#F4EFEA] relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold text-[#0B1F33] mb-4">Why Choose Us</h2>
+                <p class="text-gray-500 max-w-xl mx-auto italic">Pure serenity, unparalleled luxury, and the comfort of
+                    home.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div
+                    class="bg-white/60 backdrop-blur-md p-10 rounded-3xl border border-white hover:bg-white transition-all duration-300 group shadow-sm hover:shadow-xl">
+                    <div
+                        class="w-16 h-16 bg-[#C9A24D] rounded-2xl flex items-center justify-center text-white text-3xl mb-6 transform group-hover:rotate-12 transition-transform">
+                        📍</div>
+                    <h3 class="text-xl font-bold text-[#0B1F33] mb-3 font-serif">Prime Location</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">Located in the heart of the city with stunning
+                        views and easy access to cultural landmarks.</p>
+                </div>
+
+                <div
+                    class="bg-white/60 backdrop-blur-md p-10 rounded-3xl border border-white hover:bg-white transition-all duration-300 group shadow-sm hover:shadow-xl">
+                    <div
+                        class="w-16 h-16 bg-[#0B1F33] rounded-2xl flex items-center justify-center text-white text-3xl mb-6 transform group-hover:rotate-12 transition-transform">
+                        ⭐</div>
+                    <h3 class="text-xl font-bold text-[#0B1F33] mb-3 font-serif">5-Star Service</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">Our concierge is at your service 24/7 to ensure
+                        your stay is seamless and memorable.</p>
+                </div>
+
+                <div
+                    class="bg-white/60 backdrop-blur-md p-10 rounded-3xl border border-white hover:bg-white transition-all duration-300 group shadow-sm hover:shadow-xl">
+                    <div
+                        class="w-16 h-16 bg-[#C9A24D] rounded-2xl flex items-center justify-center text-white text-3xl mb-6 transform group-hover:rotate-12 transition-transform">
+                        📶</div>
+                    <h3 class="text-xl font-bold text-[#0B1F33] mb-3 font-serif">Ultra-Fast Wi-Fi</h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">Stay connected with fiber-optic speeds available in
+                        every room and all public spaces.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold text-[#0B1F33]">What Our Guests Say</h2>
+                <div class="w-20 h-1 bg-[#C9A24D] mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div
+                    class="relative p-8 rounded-2xl bg-gray-50 border-l-4 border-[#C9A24D] hover:bg-gray-100 transition-colors">
+                    <p class="text-gray-600 italic mb-8 leading-loose italic leading-relaxed">"The attention to detail
+                        at A&K Grand Hotel is simply unmatched. From the moment I arrived, I felt like royalty. The
+                        deluxe room was a masterpiece of design."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="/images/kareemMoh1.png"
+                            class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-md" />
+                        <div>
+                            <h4 class="font-bold text-[#0B1F33]">Kareem Mohamed</h4>
+                            <span class="text-xs uppercase tracking-widest text-[#C9A24D] font-bold">Business
+                                Traveler</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="relative p-8 rounded-2xl bg-gray-50 border-l-4 border-[#0B1F33] hover:bg-gray-100 transition-colors">
+                    <p class="text-gray-600 italic mb-8 leading-loose italic leading-relaxed">"A perfect family getaway.
+                        The staff went above and beyond to accommodate our kids, and the breakfast spread was legendary.
+                        We'll be back!"</p>
+                    <div class="flex items-center gap-4">
+                        <img src="/images/AhmedHamm.jpeg"
+                            class="w-14 h-14 rounded-full object-cover border-2 border-white shadow-md" />
+                        <div>
+                            <h4 class="font-bold text-[#0B1F33]">Ahmed Hammad</h4>
+                            <span class="text-xs uppercase tracking-widest text-[#C9A24D] font-bold">Family Guest</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>

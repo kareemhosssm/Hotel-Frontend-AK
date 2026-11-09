@@ -1,0 +1,21 @@
+// .card{
+//     button{
+//         transform: translateY(100%);
+//         transition: all 0.5s;
+//         opacity: 0;
+//     }
+//     &:hover{
+//         button{
+//             transform: translateY(0);
+//             opacity: 1;
+//         }
+//     }
+// }
+@keyframes slowZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+.animate-slow-zoom {
+    animation: slowZoom 10s linear infinite alternate;
+}

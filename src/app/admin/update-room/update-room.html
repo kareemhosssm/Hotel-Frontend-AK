@@ -1,0 +1,103 @@
+<section class="p-6 bg-[#F8FAFC] min-h-screen">
+  <div class="max-w-4xl mx-auto">
+    
+    <a routerLink="/admin/rooms" class="inline-flex items-center text-xs font-bold text-gray-400 hover:text-[#C9A24D] mb-4 transition-colors">
+      <i class="fas fa-arrow-left me-2"></i> BACK TO ROOMS LIST
+    </a>
+
+    <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+      
+      <div class="px-8 py-8 border-b border-gray-50 flex items-center justify-between bg-white">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-[#C9A24D]/10 rounded-2xl flex items-center justify-center text-[#C9A24D]">
+            <i class="fas fa-edit text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl font-black text-[#0B1F33]">Update Room</h1>
+            <p class="text-gray-400 text-sm">Modifying details for Room #{{updateRoomForm.get('number')?.value}}</p>
+          </div>
+        </div>
+        
+        <span [ngClass]="updateRoomForm.get('isAvailable')?.value ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500'" 
+              class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
+          {{ updateRoomForm.get('isAvailable')?.value ? 'Currently Available' : 'Under Maintenance' }}
+        </span>
+      </div>
+
+      <form [formGroup]="updateRoomForm" (ngSubmit)="submit()" class="p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <div class="space-y-6">
+            <div>
+              <label class="label-style">Room Number</label>
+              <input type="text" formControlName="number" class="input-style" />
+            </div>
+
+            <div>
+              <label class="label-style">Room Type</label>
+              <select formControlName="type" class="input-style">
+                <option value="Single">Single Room</option>
+                <option value="Double">Double Room</option>
+                <option value="Family">Family Suite</option>
+                <option value="Royal">Royal Suite</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="label-style">Price per Night ($)</label>
+              <input type="number" formControlName="pricePerNight" class="input-style" />
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <span class="text-sm font-bold text-[#0B1F33]">Availability Status</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="isAvailable" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <label class="label-style">Description</label>
+              <textarea rows="6" formControlName="description" class="input-style resize-none" placeholder="Enter room details..."></textarea>
+            </div>
+
+            <div>
+              <label class="label-style">Update Media Gallery</label>
+              <div class="relative group">
+                <input type="file" (change)="onFileSelected($event)" multiple 
+                       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                <div class="p-6 border-2 border-dashed border-gray-100 rounded-2xl bg-gray-50 text-center group-hover:border-[#C9A24D] transition-all">
+                  <i class="fas fa-cloud-upload-alt text-2xl text-gray-300 group-hover:text-[#C9A24D] mb-2"></i>
+                  <p class="text-xs font-bold text-gray-500 uppercase tracking-tighter">Click to replace images</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10 pt-8 border-t border-gray-50 flex items-center justify-end gap-4">
+          <button type="button" routerLink="/admin/rooms" 
+                  class="px-8 py-3.5 text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors">
+            Discard Changes
+          </button>
+          <button type="submit" 
+                  class="bg-[#0B1F33] text-white px-10 py-3.5 rounded-2xl font-bold text-sm shadow-xl shadow-blue-900/10 hover:bg-[#163552] transition-all active:scale-95 flex items-center gap-2">
+            <i class="fas fa-check-circle"></i> Save Changes
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .label-style {
+    @apply block mb-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#0B1F33]/50;
+  }
+  .input-style {
+    @apply w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-[#C9A24D]/10 focus:border-[#C9A24D] focus:bg-white outline-none transition-all text-sm font-bold text-[#0B1F33];
+  }
+</style>

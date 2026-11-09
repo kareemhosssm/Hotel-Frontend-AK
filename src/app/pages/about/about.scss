@@ -1,0 +1,101 @@
+.reviews-section {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+
+    .average-rating {
+        text-align: center;
+        margin-bottom: 30px;
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .stars {
+            color: #facc15;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        span {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+    }
+
+    .add-review {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 40px;
+
+        textarea {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            min-height: 80px;
+        }
+
+        select {
+            width: 100px;
+            padding: 5px;
+        }
+
+        button {
+            width: fit-content;
+            padding: 8px 16px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+
+            &:hover {
+                background: #1d4ed8;
+            }
+        }
+    }
+
+    .review-card {
+        background: #f9fafb;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+
+            h4 {
+                margin: 0;
+                font-weight: 600;
+            }
+
+            .stars {
+                color: #facc15;
+            }
+        }
+
+        p {
+            color: #374151;
+            margin: 0 0 10px 0;
+        }
+
+        button {
+            padding: 4px 10px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+
+            &:hover {
+                background: #dc2626;
+            }
+        }
+    }
+}

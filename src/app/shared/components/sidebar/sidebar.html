@@ -1,0 +1,57 @@
+<button class="mobile-toggle" (click)="toggleSidebar()">
+    @if (!isOpen) {
+    <span>☰</span>
+    }
+    @if (isOpen) {
+    <span>✕</span>
+    }
+</button>
+
+<div class="sidebar" [class.open]="isOpen">
+    <div class="logo">
+        <i class="fas fa-user-shield"></i> Hotel Admin
+    </div>
+
+    <ul class="menu">
+        <li class="sidebar-item" routerLink="/admin/dashboard" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }" (click)="closeOnMobile()">
+            <i class="fas fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </li>
+
+        <li class="sidebar-item" routerLink="/admin/bookings" routerLinkActive="active" (click)="closeOnMobile()">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Bookings</span>
+        </li>
+
+        <li class="sidebar-item" routerLink="/admin/rooms" routerLinkActive="active" (click)="closeOnMobile()">
+            <i class="fas fa-door-open"></i>
+            <span>Rooms</span>
+        </li>
+
+        <li class="sidebar-item" routerLink="/admin/users" routerLinkActive="active" (click)="closeOnMobile()">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+        </li>
+
+        <li class="sidebar-item" routerLink="/admin/reviews" routerLinkActive="active" (click)="closeOnMobile()">
+            <i class="fas fa-star"></i>
+            <span>Reviews</span>
+        </li>
+
+        <li class="sidebar-item" routerLink="/admin/setting" routerLinkActive="active" (click)="closeOnMobile()">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </li>
+    </ul>
+
+    <div class="logout">
+        <button class="sidebar-item logout-btn w-full" routerLink="/register" (click)="closeOnMobile()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </button>
+    </div>
+</div>
+
+<div class="main-content" [class.shifted]="isOpen">
+</div>

@@ -58,7 +58,7 @@
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/your-username/ak-grand-hotel.git](https://github.com/your-username/ak-grand-hotel.git)
+   git clone [(https://github.com/kareemhosssm/Hotel-Frontend-AK.git]https://github.com/kareemhosssm/Hotel-Frontend-AK.git
    cd ak-grand-hotel
 2. **Frontend Setup (Angular):**
   ```bash

@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { IUpdateBooking } from '../../shared/interfaces/iupdate-booking';
 import { IBookingRequest } from '../../shared/interfaces/ibooking-request';
 import { CurrencyPipe } from '@angular/common';
+import { environment } from '../../core/environments/environment';
 
 interface IBookingRange {
   checkInDate: string;
@@ -19,7 +20,7 @@ interface IBookingRange {
 
 @Component({
   selector: 'app-details',
-  imports: [FormsModule,CurrencyPipe],
+  imports: [FormsModule, CurrencyPipe],
   templateUrl: './details.html',
   styleUrl: './details.scss',
 })
@@ -29,6 +30,8 @@ export class Details implements OnInit {
   private readonly toastrService = inject(ToastrService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+
+  baseUrl = environment.baseUrl;
 
   room!: IRoom;
   selectedImage!: string;
@@ -50,14 +53,14 @@ export class Details implements OnInit {
       this.getRoomDetails(roomId);
       this.getRoomBookings(roomId);
     }
-    
-    this.route.queryParams.subscribe(params => {
-    if (params['mode'] === 'update') {
-      this.currentBookingId = +params['bookingId'];
-      this.checkInDate = params['checkIn'].split('T')[0];
-      this.checkOutDate = params['checkOut'].split('T')[0];
-    }
-  });
+
+    this.route.queryParams.subscribe((params) => {
+      if (params['mode'] === 'update') {
+        this.currentBookingId = +params['bookingId'];
+        this.checkInDate = params['checkIn'].split('T')[0];
+        this.checkOutDate = params['checkOut'].split('T')[0];
+      }
+    });
 
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
@@ -90,7 +93,7 @@ export class Details implements OnInit {
             checkOutDate: b.checkOutDate.split('T')[0],
             status: b.status,
             roomId: b.roomId,
-            bookingId: b.bookingId
+            bookingId: b.bookingId,
           }));
       },
       (err: any) => {
@@ -99,21 +102,24 @@ export class Details implements OnInit {
     );
   }
 
-   hasDateConflict(startStr: string, endStr: string): boolean {
+  hasDateConflict(startStr: string, endStr: string): boolean {
     const start = new Date(startStr);
     const end = new Date(endStr);
 
-    return this.bookedRanges.some(b => {
-      if (b.bookingId === this.currentBookingId) return false; // نتجاهل الحجز الحالي عند التعديل
+    return this.bookedRanges.some((b) => {
+      if (b.bookingId === this.currentBookingId) return false;
       const bStart = new Date(b.checkInDate);
       const bEnd = new Date(b.checkOutDate);
       return start < bEnd && end > bStart;
     });
   }
 
- bookOrUpdate(): void {
+  bookOrUpdate(): void {
     if (!this.checkInDate || !this.checkOutDate) {
-      this.toastrService.error('Please select check-in and check-out dates', 'Error');
+      this.toastrService.error(
+        'Please select check-in and check-out dates',
+        'Error',
+      );
       return;
     }
 
@@ -127,30 +133,34 @@ export class Details implements OnInit {
       return;
     }
 
-    const updatedata : IUpdateBooking = {
-    checkInDate: new Date(this.checkInDate),  
-    checkOutDate: new Date(this.checkOutDate),
-    roomId: this.roomId
-   };
+    const updatedata: IUpdateBooking = {
+      checkInDate: new Date(this.checkInDate),
+      checkOutDate: new Date(this.checkOutDate),
+      roomId: this.roomId,
+    };
 
-   const createdata : IBookingRequest = {
-     roomId: this.roomId,
-    checkInDate: this.checkInDate,  
-    checkOutDate: this.checkOutDate
-   };
-   
+    const createdata: IBookingRequest = {
+      roomId: this.roomId,
+      checkInDate: this.checkInDate,
+      checkOutDate: this.checkOutDate,
+    };
 
     if (this.currentBookingId) {
-      this.bookingService.updateBookingsByBookingId(this.currentBookingId, updatedata).subscribe({
-        next: () => {
-          this.toastrService.success('Booking Updated Successfully', 'Success');
-          this.router.navigate(['/booking']);
-        },
-        error: (err) => {
-          this.toastrService.error(err.error || 'Update failed', 'Error');
-          console.error(err);
-        }
-      });
+      this.bookingService
+        .updateBookingsByBookingId(this.currentBookingId, updatedata)
+        .subscribe({
+          next: () => {
+            this.toastrService.success(
+              'Booking Updated Successfully',
+              'Success',
+            );
+            this.router.navigate(['/booking']);
+          },
+          error: (err) => {
+            this.toastrService.error(err.error || 'Update failed', 'Error');
+            console.error(err);
+          },
+        });
     } else {
       this.bookingService.CreateBookingForUser(createdata).subscribe({
         next: () => {
@@ -160,13 +170,8 @@ export class Details implements OnInit {
         error: (err) => {
           this.toastrService.error(err.error || 'Booking failed', 'Error');
           console.error(err);
-        }
+        },
       });
     }
   }
-
-
-  
- 
-
 }

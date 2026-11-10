@@ -21,8 +21,8 @@
 
                 <div class="flex items-start gap-3">
                     <div class="relative shrink-0">
-                        <img [src]="'http://localhost:5192' + room.images[0]"
-                            class="w-20 h-20 rounded-2xl object-cover shadow-sm border border-gray-100" alt="room">
+                        <img [src]="baseUrl + room.images[0]" class="w-20 h-20 rounded-2xl object-cover shadow-sm border border-gray-100"
+                            alt="room">
                         <span
                             class="absolute -top-2 -right-2 bg-[#0B1F33] text-white text-[9px] px-1.5 py-0.5 rounded-lg font-bold">
                             #{{ room.number }}
@@ -90,8 +90,7 @@
                         <td class="py-5 px-6 lg:px-8">
                             <div class="flex items-center gap-4">
                                 <div class="relative shrink-0">
-                                    <img [src]="'http://localhost:5192' + room.images[0]"
-                                        class="w-14 h-14 rounded-2xl object-cover shadow-sm border border-gray-100"
+                                    <img [src]="baseUrl + room.images[0]" class="w-14 h-14 rounded-2xl object-cover shadow-sm border border-gray-100"
                                         alt="room">
                                     <span
                                         class="absolute -top-2 -right-2 bg-[#0B1F33] text-white text-[9px] px-1.5 py-0.5 rounded-lg font-bold">

@@ -2,7 +2,7 @@
     @if (room) {
     <div class="max-w-6xl mx-auto pt-10 px-6">
         <div class="relative group mb-6 overflow-hidden rounded-2xl shadow-2xl">
-            <img [src]="'http://localhost:5192' + selectedImage" alt="Room Image"
+            <img [src]="baseUrl + selectedImage" alt="Room Image"
                 class="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-105" />
             <div class="absolute inset-0 bg-black/10"></div>
         </div>
@@ -10,7 +10,7 @@
         <div class="flex justify-center gap-4 px-2 overflow-x-auto pb-4">
             @for (img of room.images; track img) {
             <div class="relative cursor-pointer group" (click)="changeImage(img)">
-                <img [src]="'http://localhost:5192' + img" 
+                <img [src]="baseUrl + img"
                     [class]="img === selectedImage ? 'border-[#C9A24D] ring-2 ring-[#C9A24D]' : 'border-transparent opacity-70'"
                     class="w-24 h-24 object-cover rounded-xl border-2 transition-all duration-300 hover:opacity-100 shadow-md"
                     alt="Room Thumbnail" />

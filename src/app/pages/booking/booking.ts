@@ -12,6 +12,7 @@ import { AuthService } from '../../core/services/authService/auth-service';
 import { BookingService } from '../../core/services/bookingService/booking-service';
 import { PaymentService } from '../../core/services/payment/payment-service';
 import { IgetAllBooking } from '../../shared/interfaces/iget-all-booking';
+import { environment } from '../../core/environments/environment';
 
 export interface IBookingRange {
   checkInDate: string;
@@ -34,6 +35,8 @@ export class Booking implements OnInit {
   private readonly toastrService = inject(ToastrService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly router = inject(Router);
+
+  baseUrl = environment.baseUrl;
 
   bookingList: IgetAllBooking[] = [];
   userId: string | null = null;

@@ -1,0 +1,12 @@
+/* Helper Classes to keep HTML clean */
+.label-style {
+    @apply block mb-2 text-[10px] font-black uppercase tracking-[0.15em] text-[#0B1F33]/70;
+}
+
+.input-style {
+    @apply w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-4 focus:ring-[#C9A24D]/10 focus:border-[#C9A24D] focus:bg-white transition-all outline-none text-sm font-medium;
+}
+
+.error-msg {
+    @apply mt-1.5 text-[10px] text-red-500 font-bold flex flex-col gap-0.5 px-1;
+}

@@ -4,9 +4,9 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
-import { Router , RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/authService/auth-service';
 import { CommonModule } from '@angular/common';
 
@@ -17,24 +17,46 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.scss',
 })
 export class Login {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
-private readonly authService = inject(AuthService);
- private readonly router = inject(Router);
-
- isLoading: boolean = false;
- msgError: string = '';
- isSuccess: string = '';
- showPassword = false;
+  isLoading: boolean = false;
+  msgError: string = '';
+  isSuccess: string = '';
+  showPassword = false;
 
   loginForm: FormGroup = new FormGroup({
-    
-    Email: new FormControl('' , [Validators.email, Validators.required]),
-    Password: new FormControl('', [Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#]).{8,}$/), Validators.required]),
+    Email: new FormControl('', [Validators.email, Validators.required]),
+    Password: new FormControl('', [
+      Validators.pattern(/^(?=.*[a-z])(?=.*\d)[A-Z].{7,}$/),
+      Validators.required,
+    ]),
   });
+
+  get passwordValue(): string {
+    return String(this.loginForm.get('Password')?.value ?? '');
+  }
+
+  get startsWithCapital(): boolean {
+    return /^[A-Z]/.test(this.passwordValue);
+  }
+
+  get hasMinLength(): boolean {
+    return this.passwordValue.length >= 8;
+  }
+
+  get hasLowerCase(): boolean {
+    return /[a-z]/.test(this.passwordValue);
+  }
+
+  get hasNumber(): boolean {
+    return /\d/.test(this.passwordValue);
+  }
 
   submitForm(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
+
       const formData = new FormData();
       formData.append('Email', this.loginForm.value.Email);
       formData.append('Password', this.loginForm.value.Password);
@@ -42,25 +64,22 @@ private readonly authService = inject(AuthService);
       this.authService.sendLoginForm(formData).subscribe({
         next: (res) => {
           console.log(res);
-           // Navigate to login page or show success message
+
           if (res.token) {
             setTimeout(() => {
-               //1- save token in local storage
               localStorage.setItem('userToken', res.token);
-              // 2- decode token to get user info
               this.authService.saveUserData();
-               // 3- navigate to home page
               this.router.navigate(['/home']);
             }, 1000);
-            
+
             this.isSuccess = 'Login successful! Redirecting...';
           }
+
           this.isLoading = false;
         },
-        error: (err:HttpErrorResponse) => {
+        error: (err: HttpErrorResponse) => {
           console.error('Error:', err);
-
-         this.msgError= err.error.message
+          this.msgError = err.error.message;
           this.isLoading = false;
         },
       });
@@ -69,7 +88,7 @@ private readonly authService = inject(AuthService);
     }
   }
 
-  togglePassword() {
-  this.showPassword = !this.showPassword;
-}
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
 }

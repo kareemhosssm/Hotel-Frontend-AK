@@ -115,6 +115,22 @@ export class Details implements OnInit {
   }
 
   bookOrUpdate(): void {
+    // Check if user is logged in
+    const token = localStorage.getItem('userToken');
+
+    if (!token && !this.currentBookingId) {
+      this.toastrService.warning(
+        'Please login first to complete your booking',
+        'Login Required',
+      );
+
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 2500);
+
+      return;
+    }
+
     if (!this.checkInDate || !this.checkOutDate) {
       this.toastrService.error(
         'Please select check-in and check-out dates',
